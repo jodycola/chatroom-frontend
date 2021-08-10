@@ -1,0 +1,17 @@
+:root {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+:root::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+}
+
+html, body {
+    background-color: #1A1A1D;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
