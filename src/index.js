@@ -6,7 +6,7 @@ import './index.css';
 
 // Create a Action Cable connection
 const connection = {}
-connection.cable = actionCable.createConsumer(process.env.REACT_APP_WS)
+connection.cable = actionCable.createConsumer(process.env.REACT_APP_WSS)
 
 
 ReactDOM.render(
