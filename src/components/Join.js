@@ -15,11 +15,16 @@ export default function Join({ currentUser, setCurrentUser }) {
     const history = useHistory();
 
     // Fetches a list of rooms
-    // Returns dropdown select options
+    // Mounted variable to clean up memory leak
     useEffect(() => {
+    let mounted = true;
+
     fetch(`${process.env.REACT_APP_API}rooms`)
         .then(res => res.json())
-        .then(data => setRoomArray(data))
+        .then(data => {
+            if (mounted) setRoomArray(data)
+        })
+        return () => { mounted = false };
     }, [setRoomArray]);
     
     const listRooms = roomArray.map((room) => {

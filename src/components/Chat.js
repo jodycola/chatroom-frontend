@@ -14,10 +14,15 @@ export default function Chat({ connection, currentUser, setCurrentUser }) {
     const room = (new URLSearchParams(window.location.search)).get('room');
 
     // Update the currentRoom state
+    // Mounted variable to clean up memory leak
     useEffect(() => {
+      let mounted = true;
+
       fetch(`${process.env.REACT_APP_API}room/${room}`)
             .then(res => res.json())
-            .then(data => setCurrentRoom(data))
+            .then(data => {
+              if (mounted) setCurrentRoom(data)
+            })
     }, [setCurrentRoom])
 
     // Send Message handler
