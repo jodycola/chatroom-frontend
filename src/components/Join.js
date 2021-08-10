@@ -19,7 +19,7 @@ export default function Join({ currentUser, setCurrentUser }) {
     useEffect(() => {
     let mounted = true;
 
-    fetch(`https://parley-backend.herokuapp.com/rooms`)
+    fetch(`${REACT_APP_API}rooms`)
         .then(res => res.json())
         .then(data => {
             if (mounted) setRoomArray(data)
