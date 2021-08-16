@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { populateRoomSeletionsFetch, loginFetch } from '../services/Requests';
 import styled from 'styled-components';
 
 export default function Join({ currentUser, setCurrentUser }) {
@@ -19,11 +20,9 @@ export default function Join({ currentUser, setCurrentUser }) {
     useEffect(() => {
     let mounted = true;
 
-    fetch(`${process.env.REACT_APP_API}rooms`)
-        .then(res => res.json())
-        .then(data => {
-            if (mounted) setRoomArray(data)
-        })
+    populateRoomSeletionsFetch().then(data => {
+        if (mounted) setRoomArray(data)
+    })
         return () => { mounted = false };
     }, [setRoomArray]);
     
@@ -43,23 +42,14 @@ export default function Join({ currentUser, setCurrentUser }) {
     // Login handler put into custom hooks
     const handleLogin = (e) => {
         e.preventDefault();
-        fetch(`${process.env.REACT_APP_API}login`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(login),
-        })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
+        loginFetch(login)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
             } else {
-                return res.json().then((data) => {
-                    throw data;
-                })
+                return response.json().then((data) => {throw data;})
             }
-          })
+        })
         .then(data => { 
             setCurrentUser(data.user);
             localStorage.setItem("token", data.token);

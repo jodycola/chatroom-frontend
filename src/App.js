@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { authenticateUserFetch } from './services/Requests';
 import Join from './components/Join';
 import Chat from './components/Chat';
 
 export default function App({ connection }) {
 
-  // States
+  // States and variables
   const [currentUser, setCurrentUser] = useState(null);
 
   // Sets current user local storage token
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
-      fetch(`${process.env.REACT_APP_API}auth`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(setCurrentUser)
+      authenticateUserFetch(token).then(setCurrentUser)
     }
   }, [])
 
