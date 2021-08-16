@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import { connection } from '../services/Cable'
 
-export default function ChatWebSocket({ connection, room, updateMessages }) {
+export default function ChatWebSocket({ room, updateMessages }) {
 
+    // CREATES A SUBSCRIPTION FOR EACH CLIENT THAT CONNECTS TO A CHANNEL
+    // 'CONNECTED' = WHEN CLIENT CONNECTS TO CHANNEL, DEFAULT METHOD
+    // 'RECEIVED' = HOW DATA WILL BE CONSUMED BY EACH CLIENT
     useEffect(() => {
-        connection = connection.cable.subscriptions.create({
+        connection.cable.subscriptions.create({
             channel: 'RoomChannel',
             title: room
         },

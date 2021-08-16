@@ -4,7 +4,7 @@ import { authenticateUserFetch } from './services/Requests';
 import Join from './components/Join';
 import Chat from './components/Chat';
 
-export default function App({ connection }) {
+export default function App() {
 
   // States and variables
   const [currentUser, setCurrentUser] = useState(null);
@@ -29,7 +29,6 @@ export default function App({ connection }) {
           <Chat
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
-            connection={connection}
           />
         </Route>
     </Router>

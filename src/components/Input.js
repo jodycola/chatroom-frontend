@@ -1,24 +1,24 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 
 export default function Input({ message, setMessage, sendMessage }) {
 
     return (
     <InputStyled>
-    <form className="form">
-        <input
-            className="input"
-            placeholder="Type a message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-        />
-        <button className="sendButton" onClick={(e) => sendMessage(e)}> Send </button>
-    </form>
+        <form className="form">
+            <input
+                className="input"
+                placeholder="Type a message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+            />
+            <button className="sendButton" onClick={(e) => sendMessage(e)}> Send </button>
+        </form>
     </InputStyled>
     )
 }
 
-// CSS
+// STYLED COMPONENTS
 const InputStyled = styled.div`
 .form {
     display: flex;

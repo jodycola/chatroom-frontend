@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 export default function Message({ message, messages, currentUser }) {
 
-    
-    // State and variables
+    // STATE AND VARIABLES
     let displayMessages
 
-    // Display JSX
+    // MAPS THROUGH MESSAGES COLLECTION
+    // RETURNS JSX TO DISPLAY EACH MESSAGE
     if (messages.length > 0) {
         displayMessages = messages.map((message, index) => {
             return (
@@ -21,17 +21,16 @@ export default function Message({ message, messages, currentUser }) {
         })
     }
 
-
     return (
         <MessageStyle>
-        <div className="container">
-            {displayMessages}
-        </div>
+            <div className="container">
+                {displayMessages}
+            </div>
         </MessageStyle>
     )
 }
 
-// CSS
+// STYLED COMPONENTS
 const MessageStyle = styled.div`
 .container {
     display: flex;
@@ -73,5 +72,4 @@ const MessageStyle = styled.div`
         background-image: linear-gradient(#FFA387, #FF3C00);
     }
 }
-
 `

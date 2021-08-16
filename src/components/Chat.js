@@ -1,76 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar';
+import styled from 'styled-components';
+import ChatWebSocket from './ChatWebSocket';
 import Input from './Input';
 import Message from './Message';
-import ChatWebSocket from './ChatWebSocket';
-import styled from 'styled-components';
+import NavBar from './NavBar';
+import { currentRoomFetch, createMessageFetch } from '../services/Requests';
 
-export default function Chat({ connection, currentUser, setCurrentUser }) {
 
-    // States & variables
+export default function Chat({ currentUser, setCurrentUser }) {
+
+    // STATES AND VARIABLES
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState({ messages: [] });
     const [currentRoom, setCurrentRoom] = useState(null);
     const room = (new URLSearchParams(window.location.search)).get('room');
 
-    // Update the currentRoom state
-    // Mounted variable to clean up memory leak
+    // CURRENT ROOM SETTER
     useEffect(() => {
-      let mounted = true;
-
-      fetch(`${process.env.REACT_APP_API}room/${room}`)
-            .then(res => res.json())
-            .then(data => {
-              if (mounted) setCurrentRoom(data)
-            })
+      currentRoomFetch(room)
+      .then(data => setCurrentRoom(data))
     }, [setCurrentRoom])
 
-    // Send Message handler
+
+    // SENDING MESSAGE HANDLER & MESSAGE STATE RESET
     const sendMessage = (e) => {
       e.preventDefault()
-      fetch(`${process.env.REACT_APP_API}add`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({ message, currentUser, currentRoom })
-      })
-      .then(res => res.json())
+      createMessageFetch(message, currentUser, currentRoom)
       setMessage('')
     };
 
-    // Message list updater
+
+    // UPDATES STATE COLLECTION OF MESSAGES
     const updateMessages = (data) => {
       setMessages(prevState => [ ...prevState, { messages: data } ]);
     }
+
   
     return (
         <ChatStyled>
-        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
-        <div className="chatroom">
-            <Message currentUser={currentUser} message={message} messages={messages} />
-            <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-        </div>
+          <div className="chatroom">
+              <Message currentUser={currentUser} message={message} messages={messages} />
+              <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+          </div>
         
-        <ChatWebSocket connection={connection} room={room} updateMessages={updateMessages} />
+          <ChatWebSocket room={room} updateMessages={updateMessages} />
         </ChatStyled>
     )
 }
 
-// CSS
-// @media (min-width: 320px) and (max-width: 480px) {
-//   .container {
-//     height: 100%;
-//     width: 100%;
-//   }
-// }
 
-// @media (min-width: 480px) and (max-width: 1200px) {
-//   .container {
-//     width: 100%;
-//   }
-// }
+// STYLED COMPONENTS 
 const ChatStyled = styled.div`
 .chatroom {
   position: relative;
@@ -80,5 +61,4 @@ const ChatStyled = styled.div`
   width: 65%;
   background-color: white;
 }
-
 `
